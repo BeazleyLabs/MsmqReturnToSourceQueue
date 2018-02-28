@@ -179,7 +179,20 @@ class MsmqUtilities
         return result;
     }
 
-    public static string GetFullPathWithoutPrefix(MsmqAddress address)
+    public static void SaveMessageHeaders(Dictionary<string, string> headers, Message m)
+    {
+        using (var stream = new MemoryStream())
+        {
+            headerSerializer.Serialize(stream, headers.Select(pair => new HeaderInfo
+            {
+                Key = pair.Key,
+                Value = pair.Value
+            }).ToList());
+            m.Extension = stream.ToArray();
+        }
+    }
+
+    private static string GetFullPathWithoutPrefix(MsmqAddress address)
     {
         return GetFullPathWithoutPrefix(address.Queue, address.Machine);
     }
