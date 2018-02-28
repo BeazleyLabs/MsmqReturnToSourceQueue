@@ -67,6 +67,7 @@ class ErrorManager
 
                 using (var q = new MessageQueue(MsmqUtilities.GetFullPath(MsmqAddress.Parse(failedQ))))
                 {
+                    AddOrIncrementReturnToSourceQueueCount(message, headers);
                     q.Send(message, MessageQueueTransactionType.Automatic);
                 }
 
@@ -125,6 +126,25 @@ class ErrorManager
         }
     }
 
+    private void AddOrIncrementReturnToSourceQueueCount(Message message, Dictionary<string, string> headers)
+    {
+        var returnToSourceQueueCountExists = headers.ContainsKey(ReturnToSourceQueueCount);
+        if (returnToSourceQueueCountExists)
+        {
+
+            if (int.TryParse(headers[ReturnToSourceQueueCount], out var returnToSourceQueueCount))
+            {
+                returnToSourceQueueCount++;
+                headers[ReturnToSourceQueueCount] = returnToSourceQueueCount.ToString();
+            }
+        }
+        else
+        {
+            headers.Add(ReturnToSourceQueueCount, "1");
+        }
+        MsmqUtilities.SaveMessageHeaders(headers, message);
+    }
+
     string GetOriginalId(Dictionary<string, string> headers)
     {
         string originalId;
@@ -145,7 +165,7 @@ class ErrorManager
     const string NoMessageFoundErrorFormat = "INFO: No message found with ID '{0}'. Checking headers of all messages.";
     const string NoMessageFoundInHeadersErrorFormat = "INFO: No message found with ID '{0}' in any headers.";
     const uint ProgressInterval = 100;
-
+    const string ReturnToSourceQueueCount = "ReturnToSourceQueueCount";
     TimeSpan TimeoutDuration = TimeSpan.FromSeconds(5);
     MessageQueue queue;
 
