@@ -2,7 +2,7 @@
 using System.Net;
 
 
-internal struct MsmqAddress
+public struct MsmqAddress
 {
 
     public readonly string Queue;

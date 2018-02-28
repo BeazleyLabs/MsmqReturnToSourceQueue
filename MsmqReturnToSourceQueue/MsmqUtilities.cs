@@ -7,8 +7,9 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 
-class MsmqUtilities
+public class MsmqUtilities
 {
     public static string GetFullPath(MsmqAddress value)
     {
@@ -144,7 +145,7 @@ class MsmqUtilities
         return message.CorrelationId.Replace("\\0", String.Empty);
     }
 
-    static Dictionary<string, string> DeserializeMessageHeaders(Message m)
+    public static Dictionary<string, string> DeserializeMessageHeaders(Message m)
     {
         var result = new Dictionary<string, string>();
 
