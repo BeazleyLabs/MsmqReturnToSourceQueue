@@ -1,0 +1,23 @@
+# editorconfig.org
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = crlf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.js]
+max_line_length = 120
+
+[*.ps{m1,1}]
+charset = utf-8-bom
+
+# db ghost is terrible about inserting extra whitespace noise every time you save- just ignore it
+[*.dbgcm]
+trim_trailing_whitespace = false
+
+[*.rb]
+indent_size = 2
