@@ -131,8 +131,8 @@ class ErrorManager
         var returnToSourceQueueCountExists = headers.ContainsKey(ReturnToSourceQueueCount);
         if (returnToSourceQueueCountExists)
         {
-
-            if (int.TryParse(headers[ReturnToSourceQueueCount], out var returnToSourceQueueCount))
+            int returnToSourceQueueCount;
+            if (int.TryParse(headers[ReturnToSourceQueueCount], out returnToSourceQueueCount))
             {
                 returnToSourceQueueCount++;
                 headers[ReturnToSourceQueueCount] = returnToSourceQueueCount.ToString();
