@@ -1,4 +1,4 @@
-﻿using Xunit;
+using Xunit;
 using System.Collections.Generic;
 using System.Messaging;
 
@@ -10,6 +10,7 @@ namespace ReturnToSourceQueueTests
         [Fact]
         public void SaveMessageHeadersSavesNewHeaders()
         {
+            string value;
             var message = new Message();
             var newHeaders = new Dictionary<string, string>
             {
@@ -25,7 +26,7 @@ namespace ReturnToSourceQueueTests
 
             Assert.True(deserializedHeaders.Count == 2);
 
-            deserializedHeaders.TryGetValue("key1", out var value);
+            deserializedHeaders.TryGetValue("key1", out value);
             Assert.Equal("value1", value);
 
             deserializedHeaders.TryGetValue("key2", out value);
